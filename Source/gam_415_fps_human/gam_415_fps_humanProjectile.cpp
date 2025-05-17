@@ -19,12 +19,12 @@ Agam_415_fps_humanProjectile::Agam_415_fps_humanProjectile()
 	CollisionComp->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.f));
 	CollisionComp->CanCharacterStepUpOn = ECB_No;
 
-	ballMesh = CreateDefaultSubobject<UStaticMeshComponent>("Ball Mesh");
+	ballMesh = CreateDefaultSubobject<UStaticMeshComponent>("Ball Mesh"); // Create a component subobject for "Ball Mesh", which will be used for the projectile.
 
 	// Set as root component
-	RootComponent = CollisionComp;
+	RootComponent = CollisionComp; // Create a root component for "CollisionComp", which will allow for the splat decal to be applied on hit.
 
-	ballMesh->SetupAttachment(CollisionComp);
+	ballMesh->SetupAttachment(CollisionComp); // Setup the "CollisionComp" to the projectile ball mesh.
 
 	// Use a ProjectileMovementComponent to govern this projectile's movement
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
@@ -38,6 +38,21 @@ Agam_415_fps_humanProjectile::Agam_415_fps_humanProjectile()
 	InitialLifeSpan = 3.0f;
 }
 
+void Agam_415_fps_humanProjectile::BeginPlay() // Called when the projectile is spawned.
+{
+	Super::BeginPlay();
+
+	// Create a random color to be applied to the projectile and splat decal.
+	randColor = FLinearColor(UKismetMathLibrary::RandomFloatInRange(0.f, 1.f), UKismetMathLibrary::RandomFloatInRange(0.f, 1.f), UKismetMathLibrary::RandomFloatInRange(0.f, 1.f), 1.f);
+
+	dmiMat = UMaterialInstanceDynamic::Create(projMat, this); // Create an instance of the dynamic material for each projectile spawned.
+	ballMesh->SetMaterial(0, dmiMat); // Set the spawned projectile's material to the newly created dynamic material instance (will only be applied to the new projectile. Previous and newer projectiles will also be unique).
+
+	dmiMat->SetVectorParameterValue("ProjColor", randColor); // Set the parameter "ProjColor" in blueprint to the random color so it displays the random color in game.
+
+
+}
+
 void Agam_415_fps_humanProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	// Only add impulse and destroy projectile if we hit a physics
@@ -48,16 +63,12 @@ void Agam_415_fps_humanProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* O
 		Destroy();
 	}
 
-	if (OtherActor != nullptr)
+	if (OtherActor != nullptr) // Check if what the projectile hit is valid so it can spawn the splat decal.
 	{
 
-		float ranNumX = UKismetMathLibrary::RandomFloatInRange(0.f, 1.f);
-		float ranNumY = UKismetMathLibrary::RandomFloatInRange(0.f, 1.f);
-		float ranNumZ = UKismetMathLibrary::RandomFloatInRange(0.f, 1.f);
-		float frameNum = UKismetMathLibrary::RandomFloatInRange(0.f, 3.f);
+		float frameNum = UKismetMathLibrary::RandomFloatInRange(0.f, 3.f); // Get a random number to use for choosing 1 of 4 splat textures from the grid.
 
-		FVector4 randColor = FVector4(ranNumX, ranNumY, ranNumZ, 1.f);
-
+		// Create the splat texture with its color applied on hit.
 		auto Decal = UGameplayStatics::SpawnDecalAtLocation(GetWorld(), baseMat, FVector(UKismetMathLibrary::RandomFloatInRange(20.f, 40.f)), Hit.Location, Hit.Normal.Rotation(), 0.f);
 		auto MatInstance = Decal->CreateDynamicMaterialInstance();
 
