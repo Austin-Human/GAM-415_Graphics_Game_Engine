@@ -6,6 +6,8 @@
 #include "Components/SphereComponent.h"
 #include "Components/DecalComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 
 Agam_415_fps_humanProjectile::Agam_415_fps_humanProjectile() 
 {
@@ -65,6 +67,17 @@ void Agam_415_fps_humanProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* O
 
 	if (OtherActor != nullptr) // Check if what the projectile hit is valid so it can spawn the splat decal.
 	{
+
+		if (colorP) // Checks for particle color.
+		{
+			// Randomize particle effect and color.
+			UNiagaraComponent* particleComp = UNiagaraFunctionLibrary::SpawnSystemAttached(colorP, HitComp, NAME_None, FVector(-20.f, 0.f, 0.f), FRotator(0.f), EAttachLocation::KeepRelativeOffset, true);
+			particleComp->SetNiagaraVariableLinearColor(FString("RandomColor"), randColor); // Assign the randomized color to the particles.
+			ballMesh->DestroyComponent(); // Destroy projectile on impact.
+			CollisionComp->BodyInstance.SetCollisionProfileName("NoCollision"); // Remove projectile collision.
+
+		}
+
 
 		float frameNum = UKismetMathLibrary::RandomFloatInRange(0.f, 3.f); // Get a random number to use for choosing 1 of 4 splat textures from the grid.
 

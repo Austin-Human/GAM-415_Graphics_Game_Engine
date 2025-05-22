@@ -7,6 +7,9 @@
 #include "Components/BoxComponent.h"
 #include "CubeDMIMod.generated.h"
 
+class UNiagaraSystem;
+
+
 UCLASS()
 class GAM_415_FPS_HUMAN_API ACubeDMIMod : public AActor
 {
@@ -24,17 +27,20 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere)
-		UBoxComponent* boxComp;
+	UPROPERTY(EditAnywhere) // Blueprint editable Unreal Property
+		UBoxComponent* boxComp; // Sets up hit box component.
 
-	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* cubeMesh;
+	UPROPERTY(EditAnywhere) // Blueprint editable Unreal Property
+		UStaticMeshComponent* cubeMesh; // Creates cube mesh.
 
-	UPROPERTY(EditAnywhere)
-		UMaterialInterface* baseMat;
+	UPROPERTY(EditAnywhere) // Blueprint editable Unreal Property
+		UMaterialInterface* baseMat; // Base material for cube.
 
-	UPROPERTY()
-		UMaterialInstanceDynamic* dmiMat;
+	UPROPERTY() // Unreal Property
+		UMaterialInstanceDynamic* dmiMat; // Dynamic Material Instance for randomizing and changing cube material.
+
+	UPROPERTY(EditAnywhere) // Blueprint editable Unreal Property
+		UNiagaraSystem* colorP; // Niagara Particle System object for assigning random color to particle effects.
 
 	UFUNCTION()
 		void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

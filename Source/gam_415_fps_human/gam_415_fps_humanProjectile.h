@@ -8,6 +8,7 @@
 
 class USphereComponent;
 class UProjectileMovementComponent;
+class UNiagaraSystem;
 
 UCLASS(config=Game)
 class Agam_415_fps_humanProjectile : public AActor
@@ -36,6 +37,9 @@ class Agam_415_fps_humanProjectile : public AActor
 
 	UPROPERTY() // Unreal Property
 		UMaterialInstanceDynamic* dmiMat; // Material instance that can be used to give each projectile a unique color.
+
+	UPROPERTY(EditAnywhere) // Blueprint editable Unreal Property
+		UNiagaraSystem* colorP; // Niagara Particle System object for assigning random color to particle effects.
 
 public:
 	Agam_415_fps_humanProjectile();
