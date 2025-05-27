@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "PerlinProc.h"
 
 Agam_415_fps_humanProjectile::Agam_415_fps_humanProjectile() 
 {
@@ -87,6 +88,16 @@ void Agam_415_fps_humanProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* O
 
 		MatInstance->SetVectorParameterValue("Color", randColor);
 		MatInstance->SetScalarParameterValue("Frame", frameNum);
+
+		APerlinProc* procTerrain = Cast<APerlinProc>(OtherActor); // Casts to the procedurally generated mesh in order to update it.
+
+		if (procTerrain) // Checks if hit actor is the terrain mesh.
+		{
+
+			procTerrain->AlterMesh(Hit.ImpactPoint); // Alter terrain at the impact point of the projectile.
+
+		}
+
 
 	}
 
