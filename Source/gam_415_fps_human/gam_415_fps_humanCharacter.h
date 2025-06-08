@@ -67,5 +67,7 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	UPROPERTY(EditAnywhere) // Blueprint editable Unreal Property.
+		bool isTeleporting; // Boolean. Used to determine if the player is currently being transported through a portal.
 };
 
