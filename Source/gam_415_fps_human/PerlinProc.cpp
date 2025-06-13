@@ -66,7 +66,7 @@ void APerlinProc::CreateVertices()
 
 			float Z = FMath::PerlinNoise2D(FVector2D(X * NoiseScale + 0.1, Y * NoiseScale + 0.1)) * ZMultiplier; // Use Perlin Noise to determine the dimensions of the terrain mesh, given the values plugged in.
 			
-			GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Yellow, FString::Printf(TEXT("Z %f"), Z)); // Debug message. Will not show up outside of the editor.
+			// GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Yellow, FString::Printf(TEXT("Z %f"), Z)); // Debug message. Will not show up outside of the editor.
 			
 			Vertices.Add(FVector(X * Scale, Y * Scale, Z)); // Add the scale to Vertices.
 			UV0.Add(FVector2D(X * UVScale, Y * UVScale)); // Add the UVscale to UV0.

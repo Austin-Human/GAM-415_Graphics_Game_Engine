@@ -21,43 +21,43 @@ public:
 
 protected:
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	virtual void BeginPlay() override; // Begin Play function. Called when actor is created/spawned.
 
-	virtual void PostActorCreated() override;
+	virtual void PostActorCreated() override; // Post Actor Created function. Called after the actor is created/spawned.
 
-	virtual void PostLoad() override;
+	virtual void PostLoad() override; // Post load function. Called after actor's data is loaded.
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere)
-		TArray<FVector> Vertices;
+	UPROPERTY(EditAnywhere) // Blueprint editable Unreal Property.
+		TArray<FVector> Vertices; // Array for storing vertices.
 
-	UPROPERTY(EditAnywhere)
-		TArray<int> Triangles;
+	UPROPERTY(EditAnywhere) // Blueprint editable Unreal Property.
+		TArray<int> Triangles; // Array for storing triangles.
 
-	UPROPERTY()
-		TArray<FVector> Normals;
+	UPROPERTY() // Unreal Property.
+		TArray<FVector> Normals; // Array for storing normals.
 
-	UPROPERTY(EditAnywhere)
-		TArray<FVector2D> UV0;
+	UPROPERTY(EditAnywhere) // Blueprint editable Unreal Property.
+		TArray<FVector2D> UV0; // Array for storing texture UVs.
 
-	UPROPERTY()
-		TArray<FLinearColor> VertexColors;
+	UPROPERTY() // Unreal Property.
+		TArray<FLinearColor> VertexColors; // Array to store the color of each vertex.
 
-	TArray<FColor> UpVertexColors;
+		TArray<FColor> UpVertexColors; // Array to store the color of each triangle.
 
-	TArray<FProcMeshTangent> Tangents;
+		TArray<FProcMeshTangent> Tangents; // Array to store vertexes.
 	
-	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* baseMesh;
+	UPROPERTY(EditAnywhere) // Blueprint editable Unreal Property.
+		UStaticMeshComponent* baseMesh; // Static mesh component. Allows for a static mesh to be applied to the actor.
 
 
 private:
-	UProceduralMeshComponent* procMesh;
+	UProceduralMeshComponent* procMesh; // Procedural mesh component. Allows for a mesh to be created without strictly needing the editor.
 	
-	void GetMeshData();
-	void CreateMesh();
+	void GetMeshData(); // Function to get the data of the chosen mesh.
+	void CreateMesh(); // Create the mesh using the provided shape. Allows for rendering of a mesh without needing it applied to the actor in the editor.
 
 };

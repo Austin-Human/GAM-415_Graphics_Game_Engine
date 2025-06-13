@@ -2,9 +2,8 @@
 
 
 #include "SceneCap.h"
-#include "Components/SceneCaptureComponent2D.h"
 #include "Components/StaticMeshComponent.h"
-#include "Engine/TextureRenderTarget2D.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default value
@@ -21,7 +20,7 @@ ASceneCap::ASceneCap()
 	
 	RenderTarget = NewObject<UTextureRenderTarget2D>(); // Create the Render Target object to allow for the real-time scene capture to be rendered onto an object.
 
-	SceneCaptureComponent->TextureTarget = RenderTarget;
+	SceneCaptureComponent->TextureTarget = RenderTarget; // Render the scene capture texture to the desired target.
 
 }
 
